@@ -1,37 +1,61 @@
-# minecraft-server-docker
+# Minecraft Server with Docker
 
-This is a simple Minecraft docker compose setup.
+This project runs a Minecraft server using Docker. It includes automated backups and a healthcheck to ensure the server is running smoothly.
 
-## Usage
-- Update the `docker-compose.yaml` file with your desired settings.
-    - add your volume mounts for your world data
-        - `./path/to/your/world/data:/data` where `/data` is the server folder in the container - so we mount our own empty directory to maintain state if the container dies.
-    - add your environment variables for your server settings
-        - `EULA=true`
-        - `PORT:25565` ngrok tcp 25565
-    - Paste in your ngrok authtoken from the ngrok dashboard at https://dashboard.ngrok.com/get-started/your-authtoken. Ensure a payment method is added to your ngrok account, as ngrok requires it for TCP tunnels
+## Getting Started
 
-## Run
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd minecraft-server-docker
+    ```
+
+2.  **Create a `minecraftData` directory:**
+    ```bash
+    mkdir minecraftData # when you run the container this directory will be created
+    ```
+    This directory will store your Minecraft world data.
+
+3.  **Configure ngrok (optional):**
+    If you want to expose your server to the internet, you'''ll need to configure ngrok.
+    1.  Sign up for an ngrok account at [ngrok.com](https://ngrok.com/).
+    2.  Get your authtoken from your ngrok dashboard.
+    3.  Create an `ngrok.yml` file with the following content, replacing `<your-authtoken>` with your actual token:
+        ```yaml
+        authtoken: <your-authtoken>
+        tunnels:
+          minecraft:
+            proto: tcp
+            addr: minecraft-server:25565
+        ```
+
+4.  **Start the server:**
+    ```bash
+    docker compose up -d
+    ```
+    This will start the Minecraft server, the backup service, and the ngrok tunnel (if configured).
+
+## Backups
+
+The server is configured to automatically back up the Minecraft world every 6 hours. Backups are stored in the `backups` directory.
+
+To manually trigger a backup, run the following command:
 ```bash
-docker compose up
+docker exec minecraft-backup backup now
 ```
 
-## Stop
-```bash
-docker compose down
-```
+## Healthcheck
+
+The Minecraft server container has a healthcheck that runs every minute. If the server is unresponsive, Docker will automatically restart it.
+
 ## To find your server's ngrok tunnel IP
 
 ```bash
 curl http://localhost:4040/api/tunnels
 ```
 
-## Accessing Server commands
-The server has RCON by default so we can access the cli by running:
-```bash
-docker exec -i [CONTAINER-NAME] rcon-cli
-```
-From here we can use other commands
-```bash
-/say hello server world
-```
+## Connecting to the Server
+
+*   **Locally:** You can connect to the server at `localhost:25565`.
+*   **Via ngrok:** If you configured ngrok, you can find the public address in the ngrok dashboard or by running `docker logs ngrok-tunnel`.
+

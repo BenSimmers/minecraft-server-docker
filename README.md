@@ -8,8 +8,8 @@ This is a simple Minecraft docker compose setup.
         - `./path/to/your/world/data:/data` where `/data` is the server folder in the container - so we mount our own empty directory to maintain state if the container dies.
     - add your environment variables for your server settings
         - `EULA=true`
-        - `PORT:25565`
-ngrok tcp 25565
+        - `PORT:25565` ngrok tcp 25565
+    - Paste in your ngrok authtoken from the ngrok dashboard at https://dashboard.ngrok.com/get-started/your-authtoken. Ensure a payment method is added to your ngrok account, as ngrok requires it for TCP tunnels
 
 ## Run
 ```bash
@@ -20,7 +20,11 @@ docker compose up
 ```bash
 docker compose down
 ```
+## To find your server's ngrok tunnel IP
 
+```bash
+curl http://localhost:4040/api/tunnels
+```
 
 ## Accessing Server commands
 The server has RCON by default so we can access the cli by running:

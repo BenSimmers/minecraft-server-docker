@@ -11,7 +11,7 @@ services:
     environment:
       - EULA=TRUE
     volumes:
-      - /home/bensimmers/minecraft/data:/data
+      - ./minecraftData:/data
     restart: unless-stopped
     networks:
       - minecraft_network
@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
     command: start --all --config /etc/ngrok/ngrok.yml
     volumes:
-      - /home/bensimmers/snap/ngrok/260/.config/ngrok/ngrok.yml:/etc/ngrok/ngrok.yml
+      - ./ngrok.yml:/etc/ngrok/ngrok.yml
     ports:
       - "4040:4040"
     networks:

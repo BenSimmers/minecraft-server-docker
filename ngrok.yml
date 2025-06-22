@@ -1,0 +1,7 @@
+version: "2"
+authtoken: #Paste in your auth token from https://dashboard.ngrok.com/get-started/your-authtoken
+tunnels:
+  minecraft:
+    proto: tcp
+    addr: minecraft:25565
+#NOTE: NGROK REQUIRES A PAYMENT METHOD ON FILE TO HOST TCP TUNNELS

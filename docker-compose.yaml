@@ -11,7 +11,7 @@ services:
     environment:
       - EULA=TRUE
     volumes:
-      - ./minecraftData:/data
+      - ~/minecraft/data:/data # - /home/bensimmers/minecraft/data:/data
     restart: unless-stopped
     networks:
       - minecraft_network

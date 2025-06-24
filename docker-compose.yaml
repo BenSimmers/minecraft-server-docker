@@ -12,6 +12,12 @@ services:
       - EULA=TRUE
     volumes:
       - ./minecraftData:/data
+    healthcheck:
+      test: ["CMD", "mc-health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
     restart: unless-stopped
     networks:
       - minecraft_network
@@ -20,6 +26,21 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  backup:
+    image: itzg/mc-backup
+    container_name: minecraft-backup
+    restart: unless-stopped
+    environment:
+      - BACKUP_INTERVAL=6h
+      - RCON_HOST=minecraft
+      - PRE_BACKUP_SCRIPT=/scripts/pre-backup.sh
+    volumes:
+      - ./backups:/backups
+      - ./scripts:/scripts
+      - ./minecraftData:/data:ro
+    networks:
+      - minecraft_network
 
   ngrok:
     image: ngrok/ngrok:latest

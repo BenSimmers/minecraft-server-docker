@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minecraft-backup
+spec:
+  schedule: "0 */6 * * *" # Every 6 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mc-backup
+            image: itzg/mc-backup
+            env:
+            - name: BACKUP_INTERVAL
+              value: "6h"
+            - name: RCON_HOST
+              value: "minecraft-service"
+            - name: PRE_BACKUP_SCRIPT
+              value: "/scripts/pre-backup.sh"
+            volumeMounts:
+            - name: backups
+              mountPath: /backups
+            - name: scripts
+              mountPath: /scripts
+            - name: minecraft-data
+              mountPath: /data
+              readOnly: true
+          volumes:
+          - name: backups
+            persistentVolumeClaim:
+              claimName: minecraft-backup-pvc
+          - name: scripts
+            configMap:
+              name: pre-backup-script
+              defaultMode: 0755
+          - name: minecraft-data
+            persistentVolumeClaim:
+              claimName: minecraft-data-pvc
+          restartPolicy: OnFailure

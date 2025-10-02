@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok
+  template:
+    metadata:
+      labels:
+        app: ngrok
+    spec:
+      containers:
+      - name: ngrok-tunnel
+        image: ngrok/ngrok:latest
+        args: ["start", "--all", "--config", "/etc/ngrok/ngrok.yml"]
+        ports:
+        - containerPort: 4040
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: ngrok-config-volume
+          mountPath: /etc/ngrok
+      volumes:
+      - name: ngrok-config-volume
+        configMap:
+          name: ngrok-config

@@ -59,3 +59,27 @@ curl http://localhost:4040/api/tunnels
 *   **Locally:** You can connect to the server at `localhost:25565`.
 *   **Via ngrok:** If you configured ngrok, you can find the public address in the ngrok dashboard or by running `docker logs ngrok-tunnel`.
 
+## Running on Kubernetes
+
+This project also includes manifests to run the Minecraft server on a Kubernetes cluster.
+
+### Prerequisites
+
+- A running Kubernetes cluster (like `kind`, `minikube`, or a cloud provider's).
+- `kubectl` configured to connect to your cluster.
+- An `ngrok` authtoken.
+
+### Setup
+
+1.  **Update `ngrok-configmap.yaml`:**
+    Open `k8s/ngrok-configmap.yaml` and paste your ngrok authtoken into the `authtoken` field.
+
+2.  **Apply the manifests:**
+    Run the following command to create all the Kubernetes resources:
+
+    ```bash
+    kubectl apply -f k8s/
+    ```
+
+For more detailed instructions on how to access and manage the server on Kubernetes, see the `k8s/README.md` file.
+

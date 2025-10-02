@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok-config
+data:
+  ngrok.yml: |
+    version: "2"
+    authtoken: #-- INSERT YOUR NGROK AUTHTOKEN HERE --
+    tunnels:
+      minecraft:
+        proto: tcp
+        addr: minecraft-service:25565
+    #NOTE: NGROK REQUIRES A PAYMENT METHOD ON FILE TO HOST TCP TUNNELS

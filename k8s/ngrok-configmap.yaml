@@ -5,7 +5,7 @@ metadata:
 data:
   ngrok.yml: |
     version: "2"
-    authtoken: #-- INSERT YOUR NGROK AUTHTOKEN HERE --
+    authtoken: "" # <-- Replace with your NGROK AUTHTOKEN
     tunnels:
       minecraft:
         proto: tcp

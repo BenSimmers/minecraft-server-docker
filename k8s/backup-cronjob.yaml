@@ -13,7 +13,7 @@ spec:
             image: itzg/mc-backup
             env:
             - name: BACKUP_INTERVAL
-              value: "6h"
+              value: "0 */6 * * *" # Every 6 hours
             - name: RCON_HOST
               value: "minecraft-service"
             - name: PRE_BACKUP_SCRIPT

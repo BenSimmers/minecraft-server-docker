@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pre-backup-script
+data:
+  pre-backup.sh: |
+    #!/bin/sh
+    echo "Starting backup..."
+    rcon-cli "say Starting backup..."
+    sleep 10
+    rcon-cli "save-off"
+    rcon-cli "save-all"
+    sleep 10
